@@ -3,8 +3,11 @@ let video, canvas, context, detector;
 let detectedObjects = [];
 let detecting = false;
 
-const ModelURL = 'cocossd';
-//const ModelURL = 'yolo';
+//const ModelURL = 'cocossd';
+const ModelURL = 'yolo';
+
+let hasRecentlyFetched = false
+let lastDetectedObject = null;
 
 async function init() {
     //load camera on hided video element
@@ -25,6 +28,9 @@ async function init() {
     //add detection start/stop button handlers
     document.getElementById('detectStart').addEventListener('click', startDetection);
     document.getElementById('detectStop').addEventListener('click', stopDetection);
+
+    // Add fetch nutritional facts button handler
+    document.getElementById('fetchButton').addEventListener('click', fetchNutritionalFacts);
 }
 
 function draw() {
@@ -44,9 +50,29 @@ function draw() {
             const color = 'red'; // You can adjust the color as needed
 
             drawBox(x, y, width, height, color, label, confidence);
+
+            // Check if the detected label is a fruit or vegetable
+            const fruitVegetableClasses = ['apple', 'banana', 'broccoli', 'carrot', 'orange'];
+            if (fruitVegetableClasses.includes(label) && confidence > 0.8) {
+                console.log(`Detected ${label} with confidence ${confidence}`);
+                lastDetectedObject = label;
+            }
         });
     }
     requestAnimationFrame(draw);
+}
+
+async function fetchNutritionalFacts(object) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/nutrition/${lastDetectedObject}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data); // Print the nutritional facts
+    } catch (error) {
+        console.error('Error fetching nutritional facts:', error);
+    }
 }
 
 function drawBox(x, y, w, h, color, label, confidence) {
