@@ -12,12 +12,6 @@ let lastDetectedObject = null;
 async function init() {
     //load camera on hided video element
     video = await loadWebcamStream();
-    //get canvas and context
-    canvas = document.querySelector('#canvas');
-    context = canvas.getContext('2d');
-
-    //start drawing video on context
-    draw();
 
     //load detection model
     const options = {
@@ -33,10 +27,7 @@ async function init() {
     document.getElementById('fetchButton').addEventListener('click', fetchNutritionalFacts);
 }
 
-function draw() {
-    // Clear part of the canvas
-    context.drawImage(video, 0, 0);
-
+function registerData() {
     if (detectedObjects.length) {
         detectedObjects.forEach(obj => {
             const {
@@ -47,19 +38,16 @@ function draw() {
             } = obj;
             const confidence = obj.confidence;
             const label = obj.label;
-            const color = 'red'; // You can adjust the color as needed
-
-            drawBox(x, y, width, height, color, label, confidence);
 
             // Check if the detected label is a fruit or vegetable
             const fruitVegetableClasses = ['apple', 'banana', 'broccoli', 'carrot', 'orange'];
             if (fruitVegetableClasses.includes(label) && confidence > 0.8) {
-                console.log(`Detected ${label} with confidence ${confidence}`);
+                //console.log(`Detected ${label} with confidence ${confidence}`);
                 lastDetectedObject = label;
             }
         });
     }
-    requestAnimationFrame(draw);
+    requestAnimationFrame(registerData);
 }
 
 async function fetchNutritionalFacts(object) {
@@ -75,17 +63,6 @@ async function fetchNutritionalFacts(object) {
     }
 }
 
-function drawBox(x, y, w, h, color, label, confidence) {
-    context.fillStyle = color;
-    context.font = "20px Arial";
-    context.fillText(label, x, y);
-    confidence = Math.round(confidence * 100) + '%';
-    context.fillText(confidence, x, y + 20);
-
-    context.strokeStyle = color;
-    context.strokeRect(x, y, w, h);
-}
-
 function startDetection() {
     detecting = true;
     console.log('Starting detection');
@@ -96,7 +73,7 @@ function stopDetection() {
     console.log('Stopping detection');
     detecting = false;
     detectedObjects = [];
-    draw();
+    registerData();
 }
 
 async function detect() {
@@ -105,7 +82,7 @@ async function detect() {
         detectedObjects = await detector.detect(video);
 
         // Redraw canvas
-        draw();
+        registerData();
 
         // Continue detection if still detecting
         if (detecting) {
