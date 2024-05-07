@@ -20,8 +20,8 @@ async function init() {
     detector = ml5.objectDetector('cocossd', modelLoaded);
 
     //add detection start/stop button handlers
-    document.getElementById('detectStart').addEventListener('click', startDetection);
-    document.getElementById('detectStop').addEventListener('click', stopDetection);
+    // document.getElementById('detectStart').addEventListener('click', startDetection);
+    // document.getElementById('detectStop').addEventListener('click', stopDetection);
 
     // Add fetch nutritional facts button handler
     document.getElementById('fetchButton').addEventListener('click', fetchNutritionalFacts);
@@ -52,28 +52,28 @@ function registerData() {
 
 async function fetchNutritionalFacts(object) {
     try {
+        if (!lastDetectedObject) {
+            console.error('No object detected yet');
+            return;
+        }
         const response = await fetch(`http://localhost:3001/api/nutrition/${lastDetectedObject}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
         console.log(data); // Print the nutritional facts
+
+        // Display nutritional information on a new page
+        const infoPage = window.open('', '_blank');
+        infoPage.document.write(`<h1>Nutritional Information for ${lastDetectedObject}</h1>`);
+        infoPage.document.write(`<p>Calories: ${data.calories}</p>`);
+        infoPage.document.write(`<p>Protein: ${data.protein}</p>`);
+        infoPage.document.write(`<p>Fat: ${data.fat}</p>`);
+        infoPage.document.write(`<p>Carbohydrates: ${data.carbohydrates}</p>`);
+        infoPage.document.write(`<p>Sugar: ${data.sugar}</p>`);
     } catch (error) {
         console.error('Error fetching nutritional facts:', error);
     }
-}
-
-function startDetection() {
-    detecting = true;
-    console.log('Starting detection');
-    detect();
-}
-
-function stopDetection() {
-    console.log('Stopping detection');
-    detecting = false;
-    detectedObjects = [];
-    registerData();
 }
 
 async function detect() {
@@ -81,7 +81,7 @@ async function detect() {
         // Run detection
         detectedObjects = await detector.detect(video);
 
-        // Redraw canvas
+        // Check data and update variables
         registerData();
 
         // Continue detection if still detecting
@@ -95,8 +95,14 @@ function modelLoaded() {
     // Update loader in HTML
     const loader = document.getElementById('loader');
     loader.classList.add('loaded');
-    const loadingText = document.getElementById('loadingText');
-    loadingText.innerHTML = 'LOADED';
+    loader.innerText = 'Model loaded';
+    detecting = true;
+    detect();
+
+    // Hide loader text after 5 seconds
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 5000);
 }
 
 function checkForDevices() {

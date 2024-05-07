@@ -11,19 +11,17 @@
 </head>
 
 <body>
-    <div class="loading" id="loader">
-        <div id="loadingCircle"></div>
-        <p id="loadingText">LOADING...</p>
-    </div>
     <div class="container">
         <header>
             <h1>Fruit & Vegetable Detector</h1>
         </header>
         <div class="content">
             <video id="webcam" width="640" height="480" autoPlay playsInline muted></video>
-            <button id="detectStart">Start Detection</button>
-            <button id="detectStop">Stop Detection</button>
-            <button id="fetchButton">fetch information</button>
+            <div class="explanation">
+                <p>Point the camera towards a fruit or vegetable, then press the button bellow to find nutritional
+                    information.</p>
+            </div>
+            <button id="fetchButton">Find Information</button>
             <div id="loader">Loading...</div>
         </div>
     </div>
