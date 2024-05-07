@@ -63,14 +63,12 @@ async function fetchNutritionalFacts(object) {
         const data = await response.json();
         console.log(data); // Print the nutritional facts
 
-        // Display nutritional information on a new page
-        const infoPage = window.open('', '_blank');
-        infoPage.document.write(`<h1>Nutritional Information for ${lastDetectedObject}</h1>`);
-        infoPage.document.write(`<p>Calories: ${data.calories}</p>`);
-        infoPage.document.write(`<p>Protein: ${data.protein}</p>`);
-        infoPage.document.write(`<p>Fat: ${data.fat}</p>`);
-        infoPage.document.write(`<p>Carbohydrates: ${data.carbohydrates}</p>`);
-        infoPage.document.write(`<p>Sugar: ${data.sugar}</p>`);
+        // Construct URL with parameters
+        const queryString = new URLSearchParams(data).toString();
+        const url = `nutritionInfo.html?${queryString}`;
+
+        // Navigate to the nutritional information page
+        window.location.href = url;
     } catch (error) {
         console.error('Error fetching nutritional facts:', error);
     }
