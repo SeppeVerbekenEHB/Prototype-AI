@@ -37,6 +37,28 @@ p {
     /* Add some spacing between the image and the text */
 }
 
+#test {
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#info {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#environmentalInfo {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 #goBackButton {
     display: block;
     width: 100%;

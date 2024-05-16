@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const carbs = urlParams.get('carbohydrates');
     const fat = urlParams.get('fat');
     const fiber = urlParams.get('fiber');
+    const envi = urlParams.get('environmentalInfo');
 
     // Display the retrieved data on the page
     document.getElementById('name').innerHTML = "<strong>" + name + "</strong";
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('carbohydrates').innerHTML = "<strong>Carbohydrates:</strong> " + carbs + "g";
     document.getElementById('fat').innerHTML = "<strong>Fat:</strong> " + fat + "g";
     document.getElementById('fiber').innerHTML = "<strong>Fiber:</strong> " + fiber + "g";
+    document.getElementById('envInfo').innerHTML = envi;
 
     const image = document.getElementById('image');
     // Set the src attribute based on the detected fruit/vegetable
