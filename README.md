@@ -1,10 +1,9 @@
-# Prototype-AI
-
+# VisualNutri
 ## Introduction
-Prototype-AI is a mobile application prototype designed to provide users with nutritional and environmental information about various fruits and vegetables using artificial intelligence (AI). The application utilizes an API to access a database of fruit and vegetable data, including nutritional content and environmental impact.
+VisualNutri is a mobile application prototype designed to provide users with nutritional and environmental information about various fruits and vegetables using artificial intelligence (AI). The application utilizes an API to access a database of fruit and vegetable data, including nutritional content and environmental impact.
 
 ## Installation
-To get started with Prototype-AI, follow these steps:
+To get started with VisualNutri, follow these steps:
 
 1. Clone the repository to your local machine
 
