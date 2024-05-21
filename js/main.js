@@ -53,11 +53,13 @@ function registerData() {
 async function fetchNutritionalFacts(object) {
     try {
         if (!lastDetectedObject) {
+            showError('No object detected yet, make sure you are showing a fruit or vegetable in front of the camera.');
             console.error('No object detected yet');
             return;
         }
         const response = await fetch(`http://localhost:3001/api/nutrition/${lastDetectedObject}`);
         if (!response.ok) {
+            showError('Network response was not ok');
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
@@ -70,6 +72,7 @@ async function fetchNutritionalFacts(object) {
         // Navigate to the nutritional information page
         window.location.href = url;
     } catch (error) {
+        showError('Error fetching nutritional facts');
         console.error('Error fetching nutritional facts:', error);
     }
 }
@@ -93,14 +96,11 @@ function modelLoaded() {
     // Update loader in HTML
     const loader = document.getElementById('loader');
     loader.classList.add('loaded');
-    loader.innerText = 'Model loaded';
+    showSucces('Model loaded');
     detecting = true;
     detect();
 
-    // Hide loader text after 5 seconds
-    setTimeout(() => {
-        loader.style.display = 'none';
-    }, 5000);
+    loader.style.display = 'none';
 }
 
 function checkForDevices() {
@@ -126,9 +126,34 @@ async function loadWebcamStream() {
                 return video;
             })
             .catch(error => {
+                showError("Error accessing webcam");
                 console.error("Error accessing webcam:", error);
             });
     }
+}
+
+function showError(message) {
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.textContent = message;
+    errorMessage.classList.add('visible');
+
+    // Remove the error message after 10 seconds
+    setTimeout(() => {
+        errorMessage.classList.remove('visible');
+    }, 10000); // 10000 milliseconds = 10 seconds
+
+}
+
+function showSucces(message) {
+    const errorMessage = document.getElementById('succesMessage');
+    errorMessage.textContent = message;
+    errorMessage.classList.add('visible');
+
+    // Remove the error message after 10 seconds
+    setTimeout(() => {
+        errorMessage.classList.remove('visible');
+    }, 10000); // 10000 milliseconds = 10 seconds
+
 }
 
 //checkForDevices();

@@ -87,3 +87,35 @@ video {
     height: 225px;
     margin-bottom: 10px;
 }
+
+#errorMessage {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+    display: none;
+    /* Hidden by default */
+}
+
+#errorMessage.visible {
+    display: block;
+    /* Show when there's an error */
+}
+
+#succesMessage {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #eef5cf;
+    color: #dfc905;
+    border: 1px solid #8dd40a;
+    display: none;
+    /* Hidden by default */
+}
+
+#succesMessage.visible {
+    display: block;
+    /* Show when there's an error */
+}
